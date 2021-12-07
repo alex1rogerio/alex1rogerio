@@ -92,21 +92,48 @@
 		</dependency>
 	</dependencies>
 
+<!-- 	<build> -->
+<!-- 		<plugins> -->
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.springframework.boot</groupId> -->
+<!-- 				<artifactId>spring-boot-maven-plugin</artifactId> -->
+<!-- 				<configuration> -->
+<!-- 					<excludes> -->
+<!-- 						<exclude> -->
+<!-- 							<groupId>org.projectlombok</groupId> -->
+<!-- 							<artifactId>lombok</artifactId> -->
+<!-- 						</exclude> -->
+<!-- 					</excludes> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
+<!-- 		</plugins> -->
+		
+<!-- 	</build> -->
+	
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
 			</plugin>
+			<plugin>
+		      <groupId>com.spotify</groupId>
+		      <artifactId>docker-maven-plugin</artifactId>
+		      <version>1.2.2</version>
+		      <configuration>
+		        <imageName>desafio-pagseguro</imageName>
+		        <baseImage>openjdk:11-jdk</baseImage>
+		        <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+		        <resources>
+		           <resource>
+		             <targetPath>/</targetPath>
+		             <directory>${project.build.directory}</directory>
+		             <include>${project.build.finalName}.jar</include>
+		           </resource>
+		        </resources>
+		      </configuration>
+		    </plugin>
 		</plugins>
-	</build>
+	</build>	
 
 </project>
