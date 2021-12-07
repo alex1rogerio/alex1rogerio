@@ -22,6 +22,8 @@ import br.com.pagseguro.desafiocontabancaria.api.assembler.DadosBancariosModelIn
 import br.com.pagseguro.desafiocontabancaria.api.model.DadosBancariosModel;
 import br.com.pagseguro.desafiocontabancaria.api.model.DadosBancariosPesquisaNumeroContaModel;
 import br.com.pagseguro.desafiocontabancaria.api.model.Input.DadosBancariosInput;
+import br.com.pagseguro.desafiocontabancaria.domain.exception.DadosBancariosNaoEncontradaException;
+import br.com.pagseguro.desafiocontabancaria.domain.exception.NegocioException;
 import br.com.pagseguro.desafiocontabancaria.domain.model.DadosBancarios;
 import br.com.pagseguro.desafiocontabancaria.domain.service.DadosBancariosService;
 
@@ -42,7 +44,7 @@ public class DadosBancariosController {
 	
 	DadosBancariosModel dadosBancariosModel = null;
 	
-	@GetMapping
+	@GetMapping	
 	public List<DadosBancariosModel> listar(){		
 		return   dadosBancariosModelAssembler.toCollectionModel( dadosBancariosService.listar());		
 	}
@@ -81,14 +83,12 @@ public class DadosBancariosController {
 		try {
 			dadosBancariosModel  =dadosBancariosModelAssembler.toModel(
 					dadosBancariosService.salvar(dadosBancariosModelInputDesassembler.toDomainObject(dadosBancariosInput)));						
-		}catch(Exception e ) {			
-			System.out.println(e.getMessage() );
-		}
-		return dadosBancariosModel;		
 			
-//		}catch(CozinhaNaoEncontradaException | CidadeNaoEncontradaException e ) {			
-//			throw new NegocioException(e.getMessage() , e);
-//		}
+			return dadosBancariosModel;		
+			
+		}catch(DadosBancariosNaoEncontradaException e ) {			
+			throw new NegocioException(e.getMessage() , e);
+		}
 	}
 	
 	@PutMapping("/{dadosBancariosId}")	
@@ -98,14 +98,11 @@ public class DadosBancariosController {
 		try {
 			dadosBancariosModel  = dadosBancariosModelAssembler.toModel(dadosBancariosService.salvar(dadosBancariosAtual));
 
-		}catch(Exception e ) {			
-			System.out.println(e.getMessage() );
-		}
-		return dadosBancariosModel;
+			return dadosBancariosModel;
 		
-//		}catch(CozinhaNaoEncontradaException | CidadeNaoEncontradaException e ) {			
-//			throw new NegocioException(e.getMessage() , e);
-//		}		
+		}catch(DadosBancariosNaoEncontradaException e ) {			
+			throw new NegocioException(e.getMessage() , e);
+		}		
 	}
 	
 	@DeleteMapping("/{dadosBancariosId}")	

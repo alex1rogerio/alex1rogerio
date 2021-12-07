@@ -3,16 +3,16 @@ package br.com.pagseguro.desafiocontabancaria.domain.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.pagseguro.desafiocontabancaria.domain.exception.DadosBancariosNaoEncontradaException;
 import br.com.pagseguro.desafiocontabancaria.domain.model.DadosBancarios;
 import br.com.pagseguro.desafiocontabancaria.domain.repository.DadosBancariosRepository;
 
 @Service 
 public class DadosBancariosService {
-
-	private static final String MSG_DADOS_BANCARIOS_EM_USO = "";
 	
 	@Autowired
 	private DadosBancariosRepository dadosBancariosRepository;
@@ -22,9 +22,9 @@ public class DadosBancariosService {
 	}
 	
 	public DadosBancarios porId(Long id) {				
-		return dadosBancariosRepository.findById(id).get();
-				//.orElseThrow( () -> new RestauranteNaoEncontradoException(restauranteId)    
-		//);
+		return dadosBancariosRepository.findById(id)
+				.orElseThrow( () -> new DadosBancariosNaoEncontradaException(id)     
+		);
 	}
 	
 	public DadosBancarios buscaPorNumeroConta(String numeroConta) {
@@ -42,16 +42,11 @@ public class DadosBancariosService {
 	}
 	
 	public void remover(Long id) {
-		//try {
+		try {
 			dadosBancariosRepository.deleteById(id);
-//		}catch(EmptyResultDataAccessException e) {
-//			throw new RestauranteNaoEncontradoException(id); 			
-//		}catch(DataIntegrityViolationException e) {
-//			throw new EntidadeEmUsoException(
-//				String.format(MSG_RESTAURANTE_EM_USO, id));			
-//		}
+		}catch(EmptyResultDataAccessException e) {
+			throw new DadosBancariosNaoEncontradaException(id) ; 			
+		}
 	}		
-	
-	
 	
 }
