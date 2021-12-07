@@ -1,5 +1,3 @@
 FROM openjdk:11
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-RUN bash -c 'touch /app.jar'
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom",-jar","/app.jar"]
+COPY ./teste/desafio-conta-bancaria.jar /desafio-conta-bancaria.jar
+ENTRYPOINT java -jar /desafio-conta-bancaria.jar
