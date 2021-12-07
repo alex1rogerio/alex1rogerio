@@ -112,6 +112,7 @@ public class DadosBancariosController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long dadosBancariosId) {
 		dadosBancariosService.remover(dadosBancariosId);		
-	}	
+	}
+	
 	
 }
