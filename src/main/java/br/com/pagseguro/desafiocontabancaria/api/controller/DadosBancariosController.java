@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +45,8 @@ public class DadosBancariosController {
 	
 	DadosBancariosModel dadosBancariosModel = null;
 	
-	@GetMapping	
+	
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)	
 	public List<DadosBancariosModel> listar(){		
 		return   dadosBancariosModelAssembler.toCollectionModel( dadosBancariosService.listar());		
 	}
