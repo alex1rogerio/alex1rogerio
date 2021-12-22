@@ -15,7 +15,7 @@ public class TaxaNegocioImpl implements RegraNegocioMovimentacaoService {
 	public BigDecimal aplicarTaxaSaqueNegocio(BigDecimal valorSaqueInput , Boolean clienteExclusive) {
 		
 		
-		if (valorSaque.compareTo(new BigDecimal(100.00)) < 1 || clienteExclusive ) {
+		if (valorSaqueInput.compareTo(new BigDecimal(100.00)) < 1 || clienteExclusive ) {
 			
 			this.valorSaque = valorSaqueInput;
 			
