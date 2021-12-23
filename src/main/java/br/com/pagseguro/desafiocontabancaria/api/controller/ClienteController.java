@@ -5,6 +5,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,8 +46,13 @@ public class ClienteController {
 	
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<ClienteModel> listar(){		
-		return   clienteModelAssembler.toCollectionModel( clienteService.listar());		
+	public Page<ClienteModel> listar( @PageableDefault(size = 2)  Pageable pageable  ){
+		
+		Page<Cliente> clientesPage = clienteService.listar(pageable);
+		List<ClienteModel> clientesModel = clienteModelAssembler.toCollectionModel( clientesPage.getContent() );
+		Page<ClienteModel> clienteModelPage = new PageImpl<ClienteModel>(clientesModel , pageable , clientesPage.getTotalElements());
+		return clienteModelPage;
+				
 	}
 	
 	@GetMapping("/{clienteId}")
